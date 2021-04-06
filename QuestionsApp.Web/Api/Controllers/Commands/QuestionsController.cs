@@ -20,13 +20,23 @@ namespace QuestionsApp.Web.Api.Controllers.Commands
         [HttpPut]
         public IActionResult Ask([FromQuery] string content)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(content))
+                return BadRequest("The Question Content can not be empty");
+
+            _context.Questions.Add(new QuestionDB { Content = content });
+            _context.SaveChanges();
+            return Ok();
         }
 
         [HttpPut]
         public IActionResult Vote([FromQuery] int questionID)
         {
-            throw new NotImplementedException();
+            if (!_context.Questions.Any(q => q.ID == questionID))
+                return BadRequest("Invalid Question ID");
+
+            _context.Votes.Add(new VoteDB { QuestionID = questionID });
+            _context.SaveChanges();
+            return Ok();
         }
     }
 }

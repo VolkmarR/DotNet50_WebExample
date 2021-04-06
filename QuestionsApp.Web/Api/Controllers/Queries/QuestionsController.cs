@@ -21,7 +21,8 @@ namespace QuestionsApp.Web.Api.Controllers.Queries
         [HttpGet]
         public List<Question> Get()
         {
-            throw new NotImplementedException();
+            return (from q in _context.Questions
+                    select new Question { ID = q.ID, Content = q.Content, Votes = q.Votes.Count() }).ToList();
         }
     }
 }
