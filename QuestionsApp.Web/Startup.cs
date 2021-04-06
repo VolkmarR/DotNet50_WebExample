@@ -28,6 +28,8 @@ namespace QuestionsApp.Web
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Questions API", Version = "v1" });
             });
+            // Configuration for SignalR
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,6 +55,9 @@ namespace QuestionsApp.Web
             {
                 // Activate MVC Controllers for WebApi
                 endpoints.MapControllers();
+
+                // Activate SignalR Hub
+                endpoints.MapHub<QuestionsHub>("/hub");
 
                 endpoints.MapGet("/", async context =>
                 {
