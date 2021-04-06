@@ -38,9 +38,9 @@ namespace QuestionsApp.Web
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseRouting();
             app.UseDefaultFiles();
             app.UseStaticFiles();
+            app.UseRouting();
 
             // Activate swagger
             app.UseSwagger();
