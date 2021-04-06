@@ -192,3 +192,32 @@ public void OneQuestionAndVote()
 }
 ~~~
 </details>
+
+## Activate Swagger
+
+* Add the Swashbuckle.AspNetCore NuGet package to the QuestionsApp.Web project
+
+### Configure and activate Swagger in Startup
+
+<details><summary>ConfigureServices</summary>
+
+~~~c#
+// Configuration for the Swagger Generator
+services.AddSwaggerGen(c =>
+{
+	c.SwaggerDoc("v1", new OpenApiInfo { Title = "Questions API", Version = "v1" });
+});
+~~~
+</details>
+
+<details><summary>Configure swagger (before app.UseEndpoints...)</summary>
+
+~~~c#
+// Activate swagger
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+	c.SwaggerEndpoint("/swagger/v1/swagger.json", "Questions API v1");
+});
+~~~
+</details>
