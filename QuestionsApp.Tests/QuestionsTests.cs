@@ -19,7 +19,7 @@ namespace QuestionsApp.Tests
 
         private Web.Api.Controllers.Queries.QuestionsController NewQuery() => new(_context);
 
-        private Web.Api.Controllers.Commands.QuestionsController NewCommand() => new(_context);
+        private Web.Api.Controllers.Commands.QuestionsController NewCommand() => new(_context, null);
 
         [Fact]
         public void Empty()

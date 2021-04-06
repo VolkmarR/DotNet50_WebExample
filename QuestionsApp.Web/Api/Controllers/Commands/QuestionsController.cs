@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using QuestionsApp.Web.DB;
+using QuestionsApp.Web.Hubs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +14,16 @@ namespace QuestionsApp.Web.Api.Controllers.Commands
     public class QuestionsController : ControllerBase
     {
         private readonly QuestionsContext _context;
-        public QuestionsController(QuestionsContext context)
+        private readonly IHubContext<QuestionsHub> _hub;
+        public QuestionsController(QuestionsContext context, IHubContext<QuestionsHub> hub)
         {
+            _hub = hub;
             _context = context;
+        }
+
+        private void RefreshClients()
+        {
+            _hub?.Clients.All.SendAsync("refresh").Wait();
         }
 
         [HttpPut]
@@ -25,6 +34,9 @@ namespace QuestionsApp.Web.Api.Controllers.Commands
 
             _context.Questions.Add(new QuestionDB { Content = content });
             _context.SaveChanges();
+
+            RefreshClients();
+
             return Ok();
         }
 
@@ -36,6 +48,9 @@ namespace QuestionsApp.Web.Api.Controllers.Commands
 
             _context.Votes.Add(new VoteDB { QuestionID = questionID });
             _context.SaveChanges();
+
+            RefreshClients();
+
             return Ok();
         }
     }
