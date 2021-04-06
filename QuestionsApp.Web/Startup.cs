@@ -39,6 +39,9 @@ namespace QuestionsApp.Web
             }
 
             app.UseRouting();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             // Activate swagger
             app.UseSwagger();
             app.UseSwaggerUI(c =>
