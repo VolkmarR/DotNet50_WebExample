@@ -1,4 +1,6 @@
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
+using QuestionsApp.Web.DB;
 using System;
 using Xunit;
 
@@ -6,9 +8,18 @@ namespace QuestionsApp.Tests
 {
     public class QuestionsTests
     {
-        private Web.Api.Controllers.Queries.QuestionsController NewQuery() => new();
+        private readonly QuestionsContext _context;
 
-        private Web.Api.Controllers.Commands.QuestionsController NewCommand() => new();
+        public QuestionsTests()
+        {
+            var options = new DbContextOptionsBuilder<QuestionsContext>().
+                                UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+            _context = new QuestionsContext(options);
+        }
+
+        private Web.Api.Controllers.Queries.QuestionsController NewQuery() => new(_context);
+
+        private Web.Api.Controllers.Commands.QuestionsController NewCommand() => new(_context);
 
         [Fact]
         public void Empty()
