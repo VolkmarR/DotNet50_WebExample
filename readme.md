@@ -1,6 +1,6 @@
-# DotNetCore31_WebExample
+# DotNetCore50_WebExample
 
-This is an example project that shows step by step, how to build a simple web application with asp.net core 3.1. 
+This is an example project that shows step by step, how to build a simple web application with asp.net core 5.0. 
 
 ## Result
 
