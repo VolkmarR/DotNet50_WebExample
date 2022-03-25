@@ -41,11 +41,19 @@ namespace QuestionsApp.Web.Api.Controllers.Commands
         }
 
         [HttpPut]
+        public IActionResult Clear()
+        {
+            _context.Database.EnsureDeleted();
+            RefreshClients();
+            return Ok();
+        }
+
+        [HttpPut]
         public IActionResult Vote([FromQuery] int questionID)
         {
             if (!_context.Questions.Any(q => q.ID == questionID))
                 return BadRequest("Invalid Question ID");
-
+           
             _context.Votes.Add(new VoteDB { QuestionID = questionID });
             _context.SaveChanges();
 

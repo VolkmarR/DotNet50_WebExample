@@ -12,8 +12,8 @@ namespace QuestionsApp.Tests
 
         public QuestionsTests()
         {
-            var options = new DbContextOptionsBuilder<QuestionsContext>().
-                                UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+            var options = new DbContextOptionsBuilder<QuestionsContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             _context = new QuestionsContext(options);
         }
 
@@ -25,7 +25,7 @@ namespace QuestionsApp.Tests
         public void Empty()
         {
             var query = NewQuery();
-            query.Get().Should().BeEmpty();
+            query.GetQuestions().Should().BeEmpty();
         }
 
         [Fact]
@@ -36,8 +36,8 @@ namespace QuestionsApp.Tests
 
             command.Ask("Dummy Question").Should().NotBeNull();
 
-            query.Get().Should().HaveCount(1);
-        }
+            query.GetQuestions().Should().HaveCount(1);        }
+
 
         [Fact]
         public void OneQuestionAndVote()
@@ -47,14 +47,15 @@ namespace QuestionsApp.Tests
 
             command.Ask("Dummy Question").Should().NotBeNull();
 
-            var result = query.Get();
+            var result = query.GetQuestions();
             result.Should().HaveCount(1);
             result[0].Votes.Should().Be(0);
 
             command.Vote(result[0].ID).Should().NotBeNull();
-            result = query.Get();
+            result = query.GetQuestions();
             result.Should().HaveCount(1);
             result[0].Votes.Should().Be(1);
         }
+  
     }
 }

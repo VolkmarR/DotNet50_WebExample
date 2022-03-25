@@ -14,5 +14,9 @@ namespace QuestionsApp.Web.DB
         public int ID { get; set; }
         public int QuestionID { get; set; }
         public QuestionDB Question { get; set; }
+
+
+
     }
 }
+

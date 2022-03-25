@@ -12,23 +12,26 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.4/signalr.min.js" integrity="sha512-h0xYAfohLfIHQffhHCtxoKLpHronITi3ocJHetJf4K1YCeCeEwAFA3gYsIYCrzFSHftQwXALtXvZIw51RoJ1hw==" crossorigin="anonymous"></script>
     <title>Ask your questions</title>
 </head>
-<body>
+<body onkeyup="if(event.keyCode==17){askbt.click()}">
+
     <nav class="navbar navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Questions</a>
-        <button class="btn btn-light my-2 my-sm-0" data-toggle="collapse" data-target="#questionBox">Ask</button>
-    </nav>
+        <button onclick="focusTxt()" class="btn btn-light my-2 my-sm-0" id="askbt" data-toggle="collapse">Ask</button>
+        <button class="btn btn-light my-2 my-sm-0" v-on:click="clr()">Clear</button>
 
+    </nav>
+ 
     <div id="questionView">
         <div class="collapse" id="questionBox">
             <div class="container mt-4">
                 <div class="card card-body">
                     <div class="row">
                         <div class="col-11">
-                            <input type="text" class="form-control" v-model="newQuestion" placeholder="Question">
+                            <input onkeyup="if(event.keyCode===13){sendbt.click()}" id="textbox" type="text" class="form-control" v-model="newQuestion" placeholder="Question">
                         </div>
                         <div class="col-1">
                             <button class="btn btn-primary btn-block" v-on:click="add"
-                                    data-toggle="collapse" data-target="#questionBox">
+                                    data-toggle="collapse" data-target="#questionBox" id="sendbt">
                                 Send
                             </button>
                         </div>
@@ -61,6 +64,14 @@
     </div>
 
     <script>
+
+        
+
+        function focusTxt() {
+            $('.collapse').collapse('toggle');
+            document.getElementById("textbox").focus();
+        }
+
         // vue app for the page
         var app = Vue.createApp({
             data: () => ({
@@ -70,7 +81,11 @@
                 newQuestion: '',
             }),
             methods: {
-                // adds a new question to the list
+                clr: function () {
+                    alert('alert');
+                   // axios.put('api/Commands/Questions/Clear?');
+                },
+                 // adds a new question to the list
                 add: function (event) {
                     // if the question is empty, call stopPropagation to stop twitter bootstrap from colapsing the card
                     if (this.newQuestion == '') {
@@ -93,7 +108,7 @@
                 },
                 getQuestions: function () {
                     axios
-                        .get('api/Queries/Questions')
+                        .get('api/Queries/Questions/GetQuestions')
                         .then(response => (this.questionList = response.data))
                 }
             },

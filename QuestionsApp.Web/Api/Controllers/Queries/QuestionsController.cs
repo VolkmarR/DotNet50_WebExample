@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace QuestionsApp.Web.Api.Controllers.Queries
 {
     [ApiController]
-    [Route("Api/Queries/[controller]")]
+    [Route("Api/Queries/[controller]/[action]")]
     public class QuestionsController : ControllerBase
     {
         private readonly QuestionsContext _context;
@@ -19,10 +19,21 @@ namespace QuestionsApp.Web.Api.Controllers.Queries
         }
 
         [HttpGet]
-        public List<Question> Get()
+        public List<Question> GetTest()
+        {
+               return (from q in _context.Questions
+                       select new Question { ID = q.ID, Content = q.Content, Votes = q.Votes.Count() }).ToList();
+                 
+        }
+
+
+
+
+        [HttpGet]
+        public List<Question> GetQuestions()
         {
             return (from q in _context.Questions
-                    select new Question { ID = q.ID, Content = q.Content, Votes = q.Votes.Count() }).ToList();
+                    select new Question { ID = q.ID, Content = q.Content, Votes = q.Votes.Count() }).OrderByDescending(o=>o.Votes).ToList();
         }
     }
 }

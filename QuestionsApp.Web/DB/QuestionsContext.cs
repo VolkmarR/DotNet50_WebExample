@@ -13,5 +13,6 @@ namespace QuestionsApp.Web.DB
 
         public DbSet<QuestionDB> Questions { get; set; }
         public DbSet<VoteDB> Votes { get; set; }
+
     }
 }
